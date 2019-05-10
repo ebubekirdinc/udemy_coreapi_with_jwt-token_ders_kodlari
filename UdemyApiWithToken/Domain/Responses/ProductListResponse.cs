@@ -6,7 +6,7 @@ namespace UdemyApiWithToken.Domain.Responses
     {
         public IEnumerable<Product> productList { get; set; }
 
-        public ProductListResponse(bool success, string message, IEnumerable<Product> productList) : base(success, message)
+        private ProductListResponse(bool success, string message, IEnumerable<Product> productList) : base(success, message)
         {
             this.productList = productList;
         }

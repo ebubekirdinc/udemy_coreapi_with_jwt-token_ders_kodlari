@@ -13,6 +13,6 @@ namespace UdemyApiWithToken.Domain.Services
 
         Task<ProductResponse> UpdateResponse(Product product, int productId);
 
-        Task<Product> FindByIdAsync(int productId);
+        Task<ProductResponse> FindByIdAsync(int productId);
     }
 }

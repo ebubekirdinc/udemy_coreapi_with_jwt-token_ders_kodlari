@@ -2,7 +2,7 @@
 
 namespace UdemyApiWithToken.Domain.UnitOfWork
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
         Task CompleteAsync();
     }
