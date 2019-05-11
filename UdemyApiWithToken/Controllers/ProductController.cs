@@ -18,8 +18,9 @@ namespace UdemyApiWithToken.Controllers
         // Post   /localhost:3333/api/product
 
         // put   /localhost:3333/api/product /request body
-
+        //delete   /api/product/removeProduct/2
         private readonly IProductService productService;
+
         private readonly IMapper mapper;
 
         public ProductController(IProductService productService, IMapper mapper)
@@ -103,6 +104,21 @@ namespace UdemyApiWithToken.Controllers
                 {
                     return BadRequest(response.Message);
                 }
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoveProduct(int id)
+        {
+            ProductResponse response = await productService.RemoveProduct(id);
+
+            if (response.Success)
+            {
+                return Ok(response.Product);
+            }
+            else
+            {
+                return BadRequest(response.Message);
             }
         }
     }
