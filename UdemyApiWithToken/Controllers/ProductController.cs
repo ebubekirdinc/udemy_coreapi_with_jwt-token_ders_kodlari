@@ -10,6 +10,8 @@ namespace UdemyApiWithToken.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
+        //  Get  /localhost:3333/api/product/2
+
         private readonly IProductService productService;
         private readonly IMapper mapper;
 
@@ -31,6 +33,21 @@ namespace UdemyApiWithToken.Controllers
             else
             {
                 return BadRequest(productListResponse.Message);
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetFindById(int id)
+        {
+            ProductResponse productResponse = await productService.FindByIdAsync(id);
+
+            if (productResponse.Success)
+            {
+                return Ok(productResponse.Product);
+            }
+            else
+            {
+                return BadRequest(productResponse.Message);
             }
         }
     }
