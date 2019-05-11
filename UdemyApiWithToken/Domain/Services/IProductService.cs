@@ -3,7 +3,7 @@ using UdemyApiWithToken.Domain.Responses;
 
 namespace UdemyApiWithToken.Domain.Services
 {
-    internal interface IProductService
+    public interface IProductService
     {
         Task<ProductListResponse> ListAsync();
 
