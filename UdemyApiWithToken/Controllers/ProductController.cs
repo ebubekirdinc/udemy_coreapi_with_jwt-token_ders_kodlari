@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using UdemyApiWithToken.Domain.Responses;
 using UdemyApiWithToken.Domain.Services;
 
 namespace UdemyApiWithToken.Controllers
@@ -15,6 +17,21 @@ namespace UdemyApiWithToken.Controllers
         {
             this.productService = productService;
             this.mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList()
+        {
+            ProductListResponse productListResponse = await productService.ListAsync();
+
+            if (productListResponse.Success)
+            {
+                return Ok(productListResponse.productList);
+            }
+            else
+            {
+                return BadRequest(productListResponse.Message);
+            }
         }
     }
 }
