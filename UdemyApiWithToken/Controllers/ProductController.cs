@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using UdemyApiWithToken.Domain;
 using UdemyApiWithToken.Domain.Responses;
 using UdemyApiWithToken.Domain.Services;
+using UdemyApiWithToken.Extensions;
+using UdemyApiWithToken.Resources;
 
 namespace UdemyApiWithToken.Controllers
 {
@@ -11,6 +14,8 @@ namespace UdemyApiWithToken.Controllers
     public class ProductController : ControllerBase
     {
         //  Get  /localhost:3333/api/product/2
+
+        // Post   /localhost:3333/api/product
 
         private readonly IProductService productService;
         private readonly IMapper mapper;
@@ -48,6 +53,30 @@ namespace UdemyApiWithToken.Controllers
             else
             {
                 return BadRequest(productResponse.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(ProductResource productResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
+            else
+            {
+                Product product = mapper.Map<ProductResource, Product>(productResource);
+
+                var Response = await productService.AddProduct(product);
+
+                if (Response.Success)
+                {
+                    return Ok(Response.Product);
+                }
+                else
+                {
+                    return BadRequest(Response.Message);
+                }
             }
         }
     }
