@@ -17,6 +17,8 @@ namespace UdemyApiWithToken.Controllers
 
         // Post   /localhost:3333/api/product
 
+        // put   /localhost:3333/api/product /request body
+
         private readonly IProductService productService;
         private readonly IMapper mapper;
 
@@ -76,6 +78,30 @@ namespace UdemyApiWithToken.Controllers
                 else
                 {
                     return BadRequest(Response.Message);
+                }
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct(ProductResource productResource, int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
+            else
+            {
+                Product product = mapper.Map<ProductResource, Product>(productResource);
+
+                var response = await productService.UpdateProduct(product, id);
+
+                if (response.Success)
+                {
+                    return Ok(response.Product);
+                }
+                else
+                {
+                    return BadRequest(response.Message);
                 }
             }
         }
