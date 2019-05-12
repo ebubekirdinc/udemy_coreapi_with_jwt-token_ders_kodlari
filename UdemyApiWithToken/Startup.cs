@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using UdemyApiWithToken.Domain;
+using UdemyApiWithToken.Domain.Repositories;
+using UdemyApiWithToken.Domain.Services;
+using UdemyApiWithToken.Domain.UnitOfWork;
+using UdemyApiWithToken.Services;
 
 namespace UdemyApiWithToken
 {
@@ -20,6 +26,11 @@ namespace UdemyApiWithToken
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<UdemyApiWithTokenDBContext>(options =>
