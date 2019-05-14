@@ -83,7 +83,7 @@ namespace UdemyApiWithToken.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateProduct(ProductResource productResource, int id)
         {
             if (!ModelState.IsValid)
