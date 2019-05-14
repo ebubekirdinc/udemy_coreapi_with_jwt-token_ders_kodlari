@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using UdemyApiWithToken.Domain;
 using UdemyApiWithToken.Domain.Repositories;
 using UdemyApiWithToken.Domain.Services;
 using UdemyApiWithToken.Domain.UnitOfWork;
+using UdemyApiWithToken.Security.Token;
 using UdemyApiWithToken.Services;
 
 namespace UdemyApiWithToken
@@ -39,6 +41,20 @@ namespace UdemyApiWithToken
                 });
             });
 
+            var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwtbeareroptions =>
+            {
+                jwtbeareroptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = tokenOptions.Issuer,
+                    ValidAudience = tokenOptions.Audience,
+                };
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<UdemyApiWithTokenDBContext>(options =>
@@ -54,7 +70,7 @@ namespace UdemyApiWithToken
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
             app.UseCors();
             app.UseMvc();
         }
