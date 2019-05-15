@@ -76,7 +76,7 @@ namespace UdemyApiWithToken.Security.Token
 
         public void RevokeRefreshToken(User user)
         {
-            throw new NotImplementedException();
+            user.RefreshToken = null;
         }
     }
 }
