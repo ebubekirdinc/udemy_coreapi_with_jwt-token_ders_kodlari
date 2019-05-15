@@ -41,6 +41,8 @@ namespace UdemyApiWithToken
                 });
             });
 
+            services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
+
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwtbeareroptions =>
