@@ -50,8 +50,10 @@ namespace UdemyApiWithToken
                     ValidateAudience = true,
                     ValidateIssuer = true,
                     ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
                     ValidIssuer = tokenOptions.Issuer,
                     ValidAudience = tokenOptions.Audience,
+                    IssuerSigningKey = SignHandler.GetSecurityKey(tokenOptions.SecurityKey)
                 };
             });
 
