@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace UdemyApiWithToken.Domain.Repositories
+﻿namespace UdemyApiWithToken.Domain.Repositories
 {
     internal interface IUserRepository
     {
-        Task AddUser(User user);
+        void AddUser(User user);
 
         User FindById(int userId);
 
