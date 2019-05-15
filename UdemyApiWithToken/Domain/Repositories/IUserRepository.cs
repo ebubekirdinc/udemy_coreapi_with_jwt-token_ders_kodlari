@@ -1,6 +1,6 @@
 ﻿namespace UdemyApiWithToken.Domain.Repositories
 {
-    internal interface IUserRepository
+    public interface IUserRepository
     {
         void AddUser(User user);
 
