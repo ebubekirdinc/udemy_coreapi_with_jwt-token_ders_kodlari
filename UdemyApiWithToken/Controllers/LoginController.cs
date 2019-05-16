@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UdemyApiWithToken.Domain.Responses;
 using UdemyApiWithToken.Domain.Services;
+using UdemyApiWithToken.Extensions;
+using UdemyApiWithToken.Resources;
 
 namespace UdemyApiWithToken.Controllers
 {
@@ -15,9 +18,25 @@ namespace UdemyApiWithToken.Controllers
         }
 
         [HttpPost]
-        public IActionResult Accesstoken()
+        public IActionResult Accesstoken(LoginResource loginResource)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
+            else
+            {
+                AccessTokenResponse accessTokenResponse = authenticationService.CreateAccessToken(loginResource.Email, loginResource.Password);
+
+                if (accessTokenResponse.Success)
+                {
+                    return Ok(accessTokenResponse.accesstoken);
+                }
+                else
+                {
+                    return BadRequest(accessTokenResponse.Message);
+                }
+            }
         }
 
         [HttpPost]
