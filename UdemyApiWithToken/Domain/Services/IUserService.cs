@@ -2,7 +2,7 @@
 
 namespace UdemyApiWithToken.Domain.Services
 {
-    internal interface IUserService
+    public interface IUserService
     {
         UserResponse AddUser(User user);
 
