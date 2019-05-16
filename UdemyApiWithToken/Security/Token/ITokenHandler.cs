@@ -2,7 +2,7 @@
 
 namespace UdemyApiWithToken.Security.Token
 {
-    internal interface ITokenHandler
+    public interface ITokenHandler
     {
         AccessToken CreateAccessToken(User user);
 
