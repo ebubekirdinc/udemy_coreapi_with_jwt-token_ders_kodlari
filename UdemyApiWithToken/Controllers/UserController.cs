@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using UdemyApiWithToken.Domain;
 using UdemyApiWithToken.Domain.Responses;
 using UdemyApiWithToken.Domain.Services;
 using UdemyApiWithToken.Resources;
@@ -45,7 +46,18 @@ namespace UdemyApiWithToken.Controllers
         [AllowAnonymous]
         public IActionResult AddUser(UserResource userResource)
         {
-            return Ok();
+            User user = mapper.Map<UserResource, User>(userResource);
+
+            UserResponse userResponse = userService.AddUser(user);
+
+            if (userResponse.Success)
+            {
+                return Ok(userResponse.user);
+            }
+            else
+            {
+                return BadRequest(userResponse.Message);
+            }
         }
     }
 }
