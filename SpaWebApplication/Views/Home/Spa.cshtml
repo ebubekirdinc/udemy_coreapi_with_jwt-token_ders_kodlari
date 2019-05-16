@@ -36,6 +36,35 @@
 
             })
 
+            $("#btnLogin").click(function () {
+
+                let Email = $("#LoginEmail").val();
+                let Password = $("#LoginPassword").val();
+
+                let user = { "Email": Email, "Password": Password };
+
+                let url = "http://localhost:59017/api/login/accesstoken";
+
+                $.ajax({
+                    type: "POST",
+                    crossDomain: true,
+                    url: url,
+                    data: JSON.stringify(user),
+                    success: function (data) {
+
+                        console.table(data);
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("refreshToken", data.refreshToken)
+
+                    },
+                    error: function (error) { console.log(error) },
+                    contentType: "application/json",
+                    dataType: "json"
+
+                })
+
+            })
+
         })
     </script>
 
