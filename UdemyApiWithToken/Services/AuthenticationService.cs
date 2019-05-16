@@ -1,4 +1,5 @@
-﻿using UdemyApiWithToken.Domain.Responses;
+﻿using System;
+using UdemyApiWithToken.Domain.Responses;
 using UdemyApiWithToken.Domain.Services;
 using UdemyApiWithToken.Security.Token;
 
@@ -34,7 +35,25 @@ namespace UdemyApiWithToken.Services
 
         public AccessTokenResponse CreateAccessTokenByRefreshToken(string refreshToken)
         {
-            throw new System.NotImplementedException();
+            UserResponse userResponse = userService.GetUserWithRefreshToken(refreshToken);
+
+            if (userResponse.Success)
+            {
+                if (userResponse.user.RefreshTokenEndDate < DateTime.Now)
+                {
+                    AccessToken accessToken = tokenHandler.CreateAccessToken(userResponse.user);
+
+                    return new AccessTokenResponse(accessToken);
+                }
+                else
+                {
+                    return new AccessTokenResponse("refreshtoken süresi dolmuş");
+                }
+            }
+            else
+            {
+                return new AccessTokenResponse("refreshtoken bulunamadı");
+            }
         }
 
         public AccessTokenResponse RevokeRefreshToken(string refreshToken)
