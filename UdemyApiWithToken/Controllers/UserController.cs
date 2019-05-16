@@ -25,6 +25,7 @@ namespace UdemyApiWithToken.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult GetUser()
         {
             IEnumerable<Claim> claims = User.Claims;
@@ -44,6 +45,7 @@ namespace UdemyApiWithToken.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
         public IActionResult AddUser(UserResource userResource)
         {
             User user = mapper.Map<UserResource, User>(userResource);
