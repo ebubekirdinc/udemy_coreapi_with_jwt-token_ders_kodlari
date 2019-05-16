@@ -58,7 +58,18 @@ namespace UdemyApiWithToken.Services
 
         public AccessTokenResponse RevokeRefreshToken(string refreshToken)
         {
-            throw new System.NotImplementedException();
+            UserResponse userResponse = userService.GetUserWithRefreshToken(refreshToken);
+
+            if (userResponse.Success)
+            {
+                userService.RemoveRefreshToken(userResponse.user);
+
+                return new AccessTokenResponse(new AccessToken());
+            }
+            else
+            {
+                return new AccessTokenResponse("refreshtoken bulunamadı.");
+            }
         }
     }
 }
