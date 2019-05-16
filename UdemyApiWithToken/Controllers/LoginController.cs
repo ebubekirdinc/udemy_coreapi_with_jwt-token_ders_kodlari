@@ -55,9 +55,17 @@ namespace UdemyApiWithToken.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemoveRefreshToken()
+        public IActionResult RevokeRefreshToken(TokenResource tokenResource)
         {
-            return Ok();
+            AccessTokenResponse accessTokenResponse = authenticationService.RevokeRefreshToken(tokenResource.RefreshToken);
+            if (accessTokenResponse.Success)
+            {
+                return Ok(accessTokenResponse.accesstoken);
+            }
+            else
+            {
+                return BadRequest(accessTokenResponse.Message);
+            }
         }
     }
 }
