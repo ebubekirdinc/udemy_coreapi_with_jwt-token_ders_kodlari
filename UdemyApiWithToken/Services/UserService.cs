@@ -98,6 +98,7 @@ namespace UdemyApiWithToken.Services
             try
             {
                 userRepository.RemoveRefreshToken(user);
+                unitOfWork.Complete();
             }
             catch (Exception)
             {

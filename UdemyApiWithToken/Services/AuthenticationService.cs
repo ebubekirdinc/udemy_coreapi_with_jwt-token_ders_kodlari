@@ -25,6 +25,8 @@ namespace UdemyApiWithToken.Services
             {
                 AccessToken accessToken = tokenHandler.CreateAccessToken(userResponse.user);
 
+                userService.SaveRefreshToken(userResponse.user.Id, accessToken.RefreshToken);
+
                 return new AccessTokenResponse(accessToken);
             }
             else
@@ -39,9 +41,11 @@ namespace UdemyApiWithToken.Services
 
             if (userResponse.Success)
             {
-                if (userResponse.user.RefreshTokenEndDate < DateTime.Now)
+                if (userResponse.user.RefreshTokenEndDate > DateTime.Now)
                 {
                     AccessToken accessToken = tokenHandler.CreateAccessToken(userResponse.user);
+
+                    userService.SaveRefreshToken(userResponse.user.Id, accessToken.RefreshToken);
 
                     return new AccessTokenResponse(accessToken);
                 }

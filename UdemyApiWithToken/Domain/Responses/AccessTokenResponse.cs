@@ -8,7 +8,7 @@ namespace UdemyApiWithToken.Domain.Responses
 
         private AccessTokenResponse(bool success, string message, AccessToken accessToken) : base(success, message)
         {
-            this.accesstoken = accesstoken;
+            this.accesstoken = accessToken;
         }
 
         //success
