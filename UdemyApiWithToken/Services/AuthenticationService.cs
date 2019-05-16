@@ -18,7 +18,18 @@ namespace UdemyApiWithToken.Services
 
         public AccessTokenResponse CreateAccessToken(string email, string password)
         {
-            throw new System.NotImplementedException();
+            UserResponse userResponse = userService.FindEmailAndPassword(email, password);
+
+            if (userResponse.Success)
+            {
+                AccessToken accessToken = tokenHandler.CreateAccessToken(userResponse.user);
+
+                return new AccessTokenResponse(accessToken);
+            }
+            else
+            {
+                return new AccessTokenResponse(userResponse.Message);
+            }
         }
 
         public AccessTokenResponse CreateAccessTokenByRefreshToken(string refreshToken)
