@@ -40,9 +40,18 @@ namespace UdemyApiWithToken.Controllers
         }
 
         [HttpPost]
-        public IActionResult RefreshToken()
+        public IActionResult RefreshToken(TokenResource tokenResource)
         {
-            return Ok();
+            AccessTokenResponse accessTokenResponse = authenticationService.CreateAccessTokenByRefreshToken(tokenResource.RefreshToken);
+
+            if (accessTokenResponse.Success)
+            {
+                return Ok(accessTokenResponse.accesstoken);
+            }
+            else
+            {
+                return BadRequest(accessTokenResponse.Message);
+            }
         }
 
         [HttpPost]
