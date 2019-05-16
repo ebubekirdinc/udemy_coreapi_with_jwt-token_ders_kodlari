@@ -2,7 +2,7 @@
 
 namespace UdemyApiWithToken.Domain.Services
 {
-    internal interface IAuthenticationService
+    public interface IAuthenticationService
     {
         AccessTokenResponse CreateAccessToken(string email, string password);
 
