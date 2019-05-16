@@ -8,6 +8,8 @@
 
         $(document).ready(function () {
 
+            getUserData();
+
             $("#btnSave").click(function () {
 
                 let name = $("#Name").val();
@@ -36,6 +38,46 @@
 
             })
 
+            function getUserDataRefreshToken() {
+
+                let refreshtoken = localStorage.getItem("refreshToken");
+
+                var url = "http://localhost:59017/api/login/refreshtoken";
+
+                var data = { "RefreshToken": refreshtoken };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    async: false,
+                    crossDomain: true,
+                    data: JSON.stringify(data),
+                    success: function (data) {
+
+                        console.log(data);
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("refreshToken", data.refreshToken);
+                        getUserData();
+
+                    },
+                    error: function (error) {
+
+                        if ("refreshtoken bulunamadı" == error.responseText || "refreshtoken suresi dolmus" == error.responseText) {
+
+                            $("#loginDiv").show();
+                            $("#userDiv").hide();
+
+                        }
+
+                        console.log(error.responseText)
+                    },
+                    contentType: "application/json",
+                    dataType: "json"
+
+                })
+
+            }
+
             function getUserData() {
 
                 let url = "http://localhost:59017/api/user";
@@ -51,7 +93,11 @@
 
                     },
                     statusCode: {
-                        401: function () { }
+                        401: function () {
+
+                            getUserDataRefreshToken();
+
+                        }
 
                     },
                     success: function (data) {
@@ -129,7 +175,7 @@
             <div id="userDiv">
             </div>
 
-            <div id="loginDiv">
+            <div id="loginDiv" style="display:none">
                 <h2>Üye Giriş formu</h2>
                 <form>
                     <div class="form-group">
