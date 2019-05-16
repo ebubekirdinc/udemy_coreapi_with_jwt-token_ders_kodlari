@@ -1,5 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using UdemyApiWithToken.Domain.Responses;
 using UdemyApiWithToken.Domain.Services;
 using UdemyApiWithToken.Resources;
 
@@ -18,11 +23,26 @@ namespace UdemyApiWithToken.Controllers
             this.mapper = mapper;
         }
 
+        [Authorize]
         public IActionResult GetUser()
         {
-            return Ok();
+            IEnumerable<Claim> claims = User.Claims;
+
+            string userId = claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
+
+            UserResponse userResponse = userService.FindById(int.Parse(userId));
+
+            if (userResponse.Success)
+            {
+                return Ok(userResponse.user);
+            }
+            else
+            {
+                return BadRequest(userResponse.Message);
+            }
         }
 
+        [AllowAnonymous]
         public IActionResult AddUser(UserResource userResource)
         {
             return Ok();
