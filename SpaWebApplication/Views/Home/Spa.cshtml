@@ -4,6 +4,41 @@
 @section Scripts
     {
 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#btnSave").click(function () {
+
+                let name = $("#Name").val();
+                let surname = $("#SurName").val();
+                let Email = $("#Email").val();
+                let Password = $("#Password").val();
+
+                let user = { "Name": name, "SurName": surname, "Email": Email, "Password": Password };
+
+                var url = "http://localhost:59017/api/user";
+
+                $.ajax({
+                    type: "POST",
+                    crossDomain: true,
+                    url: url,
+                    data: JSON.stringify(user),
+                    success: function (data) {
+                        console.table(data);
+
+                    },
+                    error: function (error) { console.error(error); },
+                    contentType: "application/json",
+                    dataType: "json"
+
+                })
+
+            })
+
+        })
+    </script>
+
 }
 
 <div class="container">
@@ -22,7 +57,7 @@
                     <input type="email" class="form-control" id="Email" placeholder="Şifreniz" value="fcakiroglu@outlook.com" />
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" id="Email" placeholder="Şifreniz" value="1234" />
+                    <input type="password" class="form-control" id="Password" placeholder="Şifreniz" value="1234" />
                 </div>
 
                 <button type="button" id="btnSave" class="btn btn-primary">Kaydet</button>
